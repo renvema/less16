@@ -1,6 +1,11 @@
 package task.sixteenth;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 public class Assert {
@@ -91,15 +96,15 @@ public class Assert {
             this.content = content;
         }
 
-        public final String getFrom() {
+        public String getFrom() {
             return from;
         }
 
-        public final String getTo() {
+        public String getTo() {
             return to;
         }
 
-        public final String getContent() {
+        public String getContent() {
             return content;
         }
     }
@@ -115,21 +120,21 @@ public class Assert {
             this.content = content;
         }
 
-        public final String getFrom() {
+        public String getFrom() {
             return from;
         }
 
-        public final String getTo() {
+        public String getTo() {
             return to;
         }
 
-        public final Integer getContent() {
+        public Integer getContent() {
             return content;
         }
     }
 
     public static class MailService<T> implements Consumer<IMessage<T>> {
-        Map<String, List<T>> notification = new HashMap() {
+        public Map<String, List<T>> notification = new HashMap() {
             @Override
             public Object get(Object key) {
                 return getOrDefault(key, Collections.<T>emptyList());
@@ -138,13 +143,10 @@ public class Assert {
 
         @Override
         public void accept(IMessage<T> message) {
+            List<T> list;
             if (notification.containsKey(message.getTo())) {
-                List<T> list;
-                list = notification.get(message.getTo());
-                list.add(message.getContent());
-                notification.put(message.getTo(), list);
+                notification.get(message.getTo()).add(message.getContent());
             } else {
-                List<T> list;
                 list = new ArrayList<>();
                 list.add(message.getContent());
                 notification.put(message.getTo(), list);
